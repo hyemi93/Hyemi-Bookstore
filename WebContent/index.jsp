@@ -140,17 +140,3 @@ url('./fonts/NanumGothicBold.woff') format('woff');}
 </div>
 <%@include file="footer.jsp" %>
 </html>
-<!-- <script>
-var mainImg=document.getElementById("imgslide"); //img태그에 준 id값 받아오기
-var imageArray=["./images/main1.png", "./images/main2.png", "./images/main3.png"]; //이미지를 배열로 만들어줌
-var imageIndex=0;
-
-function slideimage() {
-	mainImg.setAttribute("src", imageArray[imageIndex]);
-	imageIndex++;
-	if(imageIndex>=imageArray.length) {
-		imageIndex=0; //마지막 이미지면 첫번째로 돌아가게
-	}
-}
-setInterval(slideimage, 2000);  //이미지 변환 시간 약 2초
-</script> -->
