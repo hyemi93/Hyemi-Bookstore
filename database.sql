@@ -18,12 +18,12 @@ alter table member drop primary key cascade;
 drop table member;
 create table member(   
     id         varchar2(20)  primary key,    --회원 아이디
-    pwd        varchar2(20),     		     --회원 비밀번호
-    name       varchar2(40),			     --회원 성명
-    email      varchar2(40),			     --회원 이메일
-    zip_num    varchar2(7),			         --우편번호
-    address    varchar2(100),			     --회원 주소
-    phone      varchar2(20),			     --회원 연락처
+    pwd        varchar2(20),                 --회원 비밀번호
+    name       varchar2(40),                 --회원 성명
+    email      varchar2(40),                 --회원 이메일
+    zip_num    varchar2(7),                  --우편번호
+    address    varchar2(100),                --회원 주소
+    phone      varchar2(20),                 --회원 연락처
     indate     date          default sysdate --회원가입일
 );
 
@@ -38,18 +38,18 @@ select * from member;
 alter table product drop primary key cascade;
 drop table product;
 create table product(
-    pseq       number(5)     primary key,			--상품번호
-    name       varchar2(100),						--상품명
-    kind       char(1),   							--상품 카테고리
-    price1     number(7)     default '0',			--정가
-    price2     number(7)     default '0',			--판매가
-    writer     varchar2(30),						--저자명
-    publisher  varchar2(30),						--출판사명
-    content    varchar2(1000),						--상품 소개
+    pseq       number(5)     primary key,           --상품번호
+    name       varchar2(100),                       --상품명
+    kind       char(1),                             --상품 카테고리
+    price1     number(7)     default '0',           --정가
+    price2     number(7)     default '0',           --판매가
+    writer     varchar2(30),                        --저자명
+    publisher  varchar2(30),                        --출판사명
+    content    varchar2(1000),                      --상품 소개
     image      varchar2(50)  default 'default.jpg', --상품이미지
-    useyn      char(1)       default 'y',			--신상품 여부
-    bestyn     char(1)       default 'n',			--베스트 상품 여부
-    indate     date          default sysdate  		--상품 등록일
+    useyn      char(1)       default 'y',           --신상품 여부
+    bestyn     char(1)       default 'n',           --베스트 상품 여부
+    indate     date          default sysdate        --상품 등록일
 );
 
 /*상품 번호 시퀀스*/
@@ -105,13 +105,13 @@ select * from product;
 alter table cart drop primary key cascade;
 drop table cart;
 create table cart (
-  cseq       number(10)    primary key,  			 --장바구니번호
+  cseq       number(10)    primary key,              --장바구니번호
   oseq       number(10)    references orders(oseq),  --주문번호
   id         varchar(16)   references member(id),    --주문자 아이디
   pseq       number(5)     references product(pseq), --주문 상품번호
-  quantity   number(5)     default 1,        		 --주문 수량
-  result     char(1)       default '1',      		 --주문 처리 여부
-  indate     date          default SYSDATE   		 --주문일
+  quantity   number(5)     default 1,                --주문 수량
+  result     char(1)       default '1',              --주문 처리 여부
+  indate     date          default SYSDATE           --주문일
 );
 
 /*장바구니 번호 시퀀스*/
@@ -141,9 +141,9 @@ drop table orders;
 create table orders(
   oseq      number(10)    primary key,           --주문번호  
   id        varchar(16)   references member(id), --주문자 아이디
-  name      varchar(50),						 --상품명
-  price     number,								 --주문 금액 합계
-  count2	number,								 --주문 수량 합계
+  name      varchar(50),                         --상품명
+  price     number,                              --주문 금액 합계
+  count2	number,                              --주문 수량 합계
   indate    date          default sysdate        --주문일
 );
 
