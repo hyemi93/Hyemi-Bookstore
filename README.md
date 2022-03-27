@@ -2,8 +2,10 @@
 개발기간 : 2022.01.31 ~ 02.07
 
 **1. DB 설계**  
-<div align="center"><img src="https://user-images.githubusercontent.com/101648944/159031265-3e61e95f-ef1e-4b81-af7a-becbe3cec19d.png" width="600"/>
-<img src="https://user-images.githubusercontent.com/101648944/159036120-1cb3eeec-afca-4bf4-bc33-a4afe72bcf31.png"/></div>  
+<div align="center">
+<img src="https://user-images.githubusercontent.com/101648944/160269788-8cc92871-ae65-4dc4-a1e2-922e796f545e.PNG"/>
+<img src="https://user-images.githubusercontent.com/101648944/160269787-b0e68f28-69f5-4097-9aeb-e6637ac4a69f.png"/>
+</div>  
 <Br><Br><Br>
   
 **2. 회원 프로세스**  
