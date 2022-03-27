@@ -21,7 +21,7 @@ create table member(
     pwd        varchar2(20),     		     --회원 비밀번호
     name       varchar2(40),			     --회원 성명
     email      varchar2(40),			     --회원 이메일
-    zip_num    varchar2(7),				     --우편번호
+    zip_num    varchar2(7),			         --우편번호
     address    varchar2(100),			     --회원 주소
     phone      varchar2(20),			     --회원 연락처
     indate     date          default sysdate --회원가입일
