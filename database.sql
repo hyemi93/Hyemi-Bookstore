@@ -99,6 +99,8 @@ product_seq.nextval, '나만의 핸드메이드 천연비누', '5', '18000', '16
 insert into product(pseq, name, kind, price1, price2, writer, publisher, content, image, bestyn) values(
 product_seq.nextval, '코바늘로 뜨는 봄여름가을겨울', '5', '16000', '14400', '맨디 오설리번', '시그마북스', '좋아하는 색과 감각적인 디자인으로 사계절을 떠보자!', 'y3.jpg', 'n');
 
+select * from product;
+
 /*장바구니 테이블*/
 alter table cart drop primary key cascade;
 drop table cart;
@@ -128,9 +130,11 @@ create table orders(
   indate      date          default sysdate       -- 주문일
 );
 
-select * from orders;
+/*주문번호 시퀀스*/
 drop sequence orders_seq;
 create sequence orders_seq start with 1;
+
+select * from orders;
 
 /*주문 상세 정보 테이블*/
 alter table order_detail drop primary key cascade;
@@ -142,6 +146,8 @@ create table order_detail(
   quantity    number(5)    default 1,                 -- 주문수량
   result      char(1)      default '1'                -- 1: 미처리 2: 처리     
 );
+
+/*주문상세번호 시퀀스*/
 drop sequence order_detail_seq;
 create sequence order_detail_seq start with 1;
 
@@ -157,6 +163,8 @@ create table qna (
   rep         char(1)       default '1',        --1:답변 무  2:답변 유  
   indate      date default  sysdate     -- 작성일
 ); 
+
+/*글번호 시퀀스*/
 drop sequence qna_seq;
 create sequence qna_seq start with 1;
 
@@ -167,18 +175,10 @@ update qna SET reply='답변내용', rep='2';
 
 insert into qna (qseq, subject, content, id)
 values(qna_seq.nextval, '테스트2', '질문내용2', 'one');
-commit;
 
+select * from qna;
 
--- 샘플 데이터 입력
-
-
-
-
-
-
-
-
+/*장바구니 뷰*/
 create or replace view cart_view
 as
 select o.cseq, o.id, o.pseq, m.name mname, p.name pname, 
@@ -187,6 +187,9 @@ from cart o, member m, product p
 where o.id = m.id and o.pseq = p.pseq
 and result='1';
 
+select * from cart_view;
+
+/*주문목록 뷰*/
 create or replace view order_view
 as
 select o.cseq, o.oseq, o.id, o.pseq, m.name mname, p.name pname, 
@@ -195,14 +198,9 @@ from cart o, member m, product p
 where o.id = m.id and o.pseq = p.pseq
 and result='2';
 
-create or replace view order_view2
-as
-select d.odseq, o.oseq, o.id, o.indate, d.pseq,d.quantity, m.name mname,
-m.zip_num, m.address, m.phone, p.name pname, p.price2, d.result, p.image   
-from orders o, order_detail d, member m, product p 
-where o.oseq=d.oseq and o.id = m.id and d.pseq = p.pseq;
+select * from order_view;
            
--- 베스트 상품
+/*베스트상품 뷰*/
 create or replace view best_pro_view
 as
 select pseq, name, price2, image, writer, publisher
@@ -212,7 +210,9 @@ from( select rownum, pseq, name, price2, image, writer, publisher
       order by indate desc)
 where  rownum <=4;
 
--- 신상품
+select * from best_pro_view;
+
+/*신상품 뷰*/
 create or replace view new_pro_view
 as
 select pseq, name, price2, image, writer, publisher
@@ -223,20 +223,3 @@ from( select rownum, pseq, name, price2, image, writer, publisher
 where  rownum <=4;
 
 select * from new_pro_view;
-select * from best_pro_view;
-
-select * from product;
-
-select * from member;
-
-select * from cart_view;
-select * from order_view;
-
-select * from orders;
-select * from qna;
-select * from order_detail;
-
-select * from worker;
-select * from cart;
-
-select MAX(oseq) from orders
