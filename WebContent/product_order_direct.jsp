@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@include file="header.jsp" %>
 <%@include file="images/mypage/sub_img.html" %>
-<%@include file="images/mypage/sub_menu.html" %>
+<%@include file="images/mypage/sub_menu.jsp" %>
 <%
     request.setCharacterEncoding("UTF-8");
 	int oseq=Integer.parseInt(request.getParameter("oseq"));
