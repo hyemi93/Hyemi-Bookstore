@@ -1,10 +1,10 @@
 /*관리자 테이블*/
 drop table worker;
 create table worker(          
-    id          varchar2(20)  primary key,
-    pwd         varchar2(20),
-    name        varchar2(40),
-    phone       varchar2(20)
+    id        varchar2(20) primary key, --관리자 아이디
+    pwd       varchar2(20),				--관리자 비밀번호
+    name      varchar2(40),				--관리자명
+    phone     varchar2(20)				--관리자 연락처
 );
 
 /*테스트용 쿼리*/
@@ -16,15 +16,14 @@ select * from worker;
 alter table member drop primary key cascade;
 drop table member;
 create table member(   
-    id         varchar2(20)  primary key,
-    pwd        varchar2(20),     
-    name       varchar2(40),
-    email      varchar2(40),
-    zip_num    varchar2(7),
-    address    varchar2(100),
-    phone      varchar2(20),
-    useyn      char(1)       default 'y',
-    indate     date          default sysdate
+    id         varchar2(20)  primary key,    --회원 아이디
+    pwd        varchar2(20),     		     --회원 비밀번호
+    name       varchar2(40),			     --회원 성명
+    email      varchar2(40),			     --회원 이메일
+    zip_num    varchar2(7),				     --우편번호
+    address    varchar2(100),			     --회원 주소
+    phone      varchar2(20),			     --회원 연락처
+    indate     date          default sysdate --회원가입일
 );
 
 /*테스트용 쿼리*/
@@ -39,18 +38,18 @@ select * from member;
 alter table product drop primary key cascade;
 drop table product;
 create table product(
-    pseq       number(5)     primary key,
-    name       varchar2(100),
-    kind       char(1),   
-    price1     number(7)     default '0',
-    price2     number(7)     default '0',
-    writer     varchar2(30),
-    publisher  varchar2(30),
-    content    varchar2(1000),
-    image      varchar2(50)  default 'default.jpg',
-    useyn      char(1)       default 'y',
-    bestyn     char(1)       default 'n',
-    indate     date          default sysdate  
+    pseq       number(5)     primary key,			--상품번호
+    name       varchar2(100),						--상품명
+    kind       char(1),   							--상품 카테고리
+    price1     number(7)     default '0',			--정가
+    price2     number(7)     default '0',			--판매가
+    writer     varchar2(30),						--저자명
+    publisher  varchar2(30),						--출판사명
+    content    varchar2(1000),						--상품 소개
+    image      varchar2(50)  default 'default.jpg', --상품이미지
+    useyn      char(1)       default 'y',			--신상품 여부
+    bestyn     char(1)       default 'n',			--베스트 상품 여부
+    indate     date          default sysdate  		--상품 등록일
 );
 
 /*상품 번호 시퀀스*/
@@ -105,13 +104,13 @@ select * from product;
 alter table cart drop primary key cascade;
 drop table cart;
 create table cart (
-  cseq         number(10)    primary key,  -- 장바구니번호
-  oseq         number(10)    references orders(oseq),
-  id           varchar(16)   references member(id),  -- 주문자 아이디(FK :　member.id) 
-  pseq         number(5)     references product(pseq), -- 주문 상품번호(FK :product.pseq) 
-  quantity     number(5)     default 1,        -- 주문 수량
-  result       char(1)       default '1',      -- 1:미처리 2:처리
-  indate       date          default SYSDATE   -- 주문일
+  cseq       number(10)    primary key,  			 --장바구니번호
+  oseq       number(10)    references orders(oseq),  --주문번호
+  id         varchar(16)   references member(id),    --주문자 아이디
+  pseq       number(5)     references product(pseq), --주문 상품번호
+  quantity   number(5)     default 1,        		 --주문 수량
+  result     char(1)       default '1',      		 --주문 처리 여부
+  indate     date          default SYSDATE   		 --주문일
 );
 
 /*장바구니 번호 시퀀스*/
@@ -122,12 +121,12 @@ create sequence cart_seq start with 1;
 alter table orders drop primary key cascade;
 drop table orders;
 create table orders(
-  oseq        number(10)    primary key,           -- 주문번호  
-  id          varchar(16)   references member(id), -- 주문자 아이디
-  name        varchar(50),
-  price       number,
-  count2	  number,
-  indate      date          default sysdate       -- 주문일
+  oseq      number(10)    primary key,           --주문번호  
+  id        varchar(16)   references member(id), --주문자 아이디
+  name      varchar(50),						 --상품명
+  price     number,								 --주문 금액 합계
+  count2	number,								 --주문 수량 합계
+  indate    date          default sysdate        --주문일
 );
 
 /*주문번호 시퀀스*/
@@ -140,11 +139,11 @@ select * from orders;
 alter table order_detail drop primary key cascade;
 drop table order_detail;
 create table order_detail(
-  odseq       number(10)   primary key,        -- 주문상세번호
-  oseq        number(10)   references orders(oseq),   -- 주문번호  
-  pseq        number(5)    references product(pseq),  -- 상품번호
-  quantity    number(5)    default 1,                 -- 주문수량
-  result      char(1)      default '1'                -- 1: 미처리 2: 처리     
+  odseq       number(10)   primary key,        		 --주문상세번호
+  oseq        number(10)   references orders(oseq),  --주문번호
+  pseq        number(5)    references product(pseq), --상품번호
+  quantity    number(5)    default 1,                --주문수량
+  result      char(1)      default '1'               --주문 처리 여부
 );
 
 /*주문상세번호 시퀀스*/
@@ -155,13 +154,13 @@ create sequence order_detail_seq start with 1;
 alter table qna drop primary key cascade;
 drop table qna;
 create table qna (
-  qseq        number(5)    primary key,  -- 글번호 
-  subject     varchar(300),            -- 제목
-  content     varchar(1000),          -- 문의내용
-  reply       varchar(1000),           -- 답변내용
-  id          varchar(20),                 -- 작성자(FK : member.id) 
-  rep         char(1)       default '1',        --1:답변 무  2:답변 유  
-  indate      date default  sysdate     -- 작성일
+  qseq      number(5)    primary key,  --글번호
+  subject   varchar(300),              --글제목
+  content   varchar(1000),             --문의 내용
+  reply     varchar(1000),             --답변 내용
+  id        varchar(20),               --작성자
+  rep       char(1)       default '1', --답변 여부
+  indate    date default  sysdate      --작성일
 ); 
 
 /*글번호 시퀀스*/
@@ -169,9 +168,7 @@ drop sequence qna_seq;
 create sequence qna_seq start with 1;
 
 /*테스트용 쿼리*/
-insert into qna (qseq, subject, content, id)
-values(qna_seq.nextval, '테스트', '질문내용1', 'one');
-update qna SET reply='답변내용', rep='2';
+insert into qna values(qna_seq.nextval, '테스트', '질문내용1', '답변내용', 'one', '2', sysdate);
 
 insert into qna (qseq, subject, content, id)
 values(qna_seq.nextval, '테스트2', '질문내용2', 'one');
@@ -181,8 +178,7 @@ select * from qna;
 /*장바구니 뷰*/
 create or replace view cart_view
 as
-select o.cseq, o.id, o.pseq, m.name mname, p.name pname, 
-o.quantity, o.indate, p.price2, o.result, p.image, p.writer, p.publisher
+select o.cseq, o.id, o.pseq, m.name mname, p.name pname, o.quantity, o.indate, p.price2, o.result, p.image, p.writer, p.publisher
 from cart o, member m, product p 
 where o.id = m.id and o.pseq = p.pseq
 and result='1';
@@ -192,8 +188,7 @@ select * from cart_view;
 /*주문목록 뷰*/
 create or replace view order_view
 as
-select o.cseq, o.oseq, o.id, o.pseq, m.name mname, p.name pname, 
-o.quantity, o.indate, p.price2, o.result, p.image, p.writer, p.publisher
+select o.cseq, o.oseq, o.id, o.pseq, m.name mname, p.name pname, o.quantity, o.indate, p.price2, o.result, p.image, p.writer, p.publisher
 from cart o, member m, product p 
 where o.id = m.id and o.pseq = p.pseq
 and result='2';
@@ -204,11 +199,11 @@ select * from order_view;
 create or replace view best_pro_view
 as
 select pseq, name, price2, image, writer, publisher
-from( select rownum, pseq, name, price2, image, writer, publisher
-      from product  
-      where bestyn='y' 
-      order by indate desc)
-where  rownum <=4;
+from(select rownum, pseq, name, price2, image, writer, publisher
+     from product  
+     where bestyn='y' 
+     order by indate desc)
+where rownum <=4;
 
 select * from best_pro_view;
 
@@ -216,10 +211,10 @@ select * from best_pro_view;
 create or replace view new_pro_view
 as
 select pseq, name, price2, image, writer, publisher
-from( select rownum, pseq, name, price2, image, writer, publisher
-      from product  
-      where useyn='y' 
-      order by indate desc)
-where  rownum <=4;
+from(select rownum, pseq, name, price2, image, writer, publisher
+     from product  
+     where useyn='y' 
+     order by indate desc)
+where rownum <=4;
 
 select * from new_pro_view;
