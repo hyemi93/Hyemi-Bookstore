@@ -3,8 +3,8 @@ drop table worker;
 create table worker(          
     id        varchar2(20) primary key, --관리자 아이디
     pwd       varchar2(20),             --관리자 비밀번호
-    name      varchar2(40),				--관리자명
-    phone     varchar2(20)				--관리자 연락처
+    name      varchar2(40),             --관리자명
+    phone     varchar2(20)              --관리자 연락처
 );
 
 /*테스트용 쿼리*/
