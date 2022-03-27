@@ -12,6 +12,7 @@ insert into worker values('admin', 'admin', '관리자', '010-777-7777');
 
 select * from worker;
 
+
 /*회원 테이블*/
 alter table member drop primary key cascade;
 drop table member;
@@ -27,12 +28,11 @@ create table member(
 );
 
 /*테스트용 쿼리*/
-insert into member(id, pwd, name, zip_num, address, phone) values
-('one', '1111', '허혜미', '133-110', '서울시성동구성수동1가 1번지21호', '010-1234-5678');
-insert into member(id, pwd, name, zip_num, address, phone) values
-('two', '2222', '김혜미', '130-120', '서울시송파구잠실2동 리센츠 아파트 201동 505호', '010-1234-4567');
+insert into member values ('one', '1111', '허혜미', 'one@gmail.com', '133-110', '서울시성동구성수동1가 1번지21호', '010-1234-5678', sysdate);
+insert into member values ('two', '2222', '김혜미', 'two@gmail.com', '130-120', '서울시송파구잠실2동 리센츠 아파트 201동 505호', '010-1234-4567', sysdate);
 
 select * from member;
+
 
 /*상품 테이블*/
 alter table product drop primary key cascade;
@@ -100,6 +100,7 @@ product_seq.nextval, '코바늘로 뜨는 봄여름가을겨울', '5', '16000', 
 
 select * from product;
 
+
 /*장바구니 테이블*/
 alter table cart drop primary key cascade;
 drop table cart;
@@ -117,6 +118,23 @@ create table cart (
 drop sequence cart_seq;
 create sequence cart_seq start with 1;
 
+/*테스트용 쿼리*/
+insert into cart values(cart_seq.nextval, 1, 'one',  2, 1, '2', sysdate);
+insert into cart values(cart_seq.nextval, 1, 'one',  6, 2, '2', sysdate);
+insert into cart values(cart_seq.nextval, 1, 'one', 14, 1, '2', sysdate);
+
+insert into cart values(cart_seq.nextval, 2, 'one', 21, 1, '2', sysdate);
+insert into cart values(cart_seq.nextval, 2, 'one',  5, 1, '2', sysdate);
+insert into cart values(cart_seq.nextval, 2, 'one',  7, 1, '2', sysdate);
+insert into cart values(cart_seq.nextval, 2, 'one', 13, 1, '2', sysdate);
+
+insert into cart(cseq, id, pseq, quantity) values(cart_seq.nextval, 'one',  '1', 1);
+insert into cart(cseq, id, pseq, quantity) values(cart_seq.nextval, 'one',  '6', 1);
+insert into cart(cseq, id, pseq, quantity) values(cart_seq.nextval, 'one', '18', 1);
+
+select * from cart;
+
+
 /*주문 테이블*/
 alter table orders drop primary key cascade;
 drop table orders;
@@ -129,26 +147,12 @@ create table orders(
   indate    date          default sysdate        --주문일
 );
 
-/*주문번호 시퀀스*/
-drop sequence orders_seq;
-create sequence orders_seq start with 1;
+/*테스트용 쿼리*/
+insert into orders values(1, 'one', '센 강의 이름 모를 여인 외', 51300, 4, sysdate);
+insert into orders values(2, 'one', '1인 가구를 위한 셀프 집 꾸미기 외', 60000, 4, sysdate);
 
 select * from orders;
 
-/*주문 상세 정보 테이블*/
-alter table order_detail drop primary key cascade;
-drop table order_detail;
-create table order_detail(
-  odseq       number(10)   primary key,        		 --주문상세번호
-  oseq        number(10)   references orders(oseq),  --주문번호
-  pseq        number(5)    references product(pseq), --상품번호
-  quantity    number(5)    default 1,                --주문수량
-  result      char(1)      default '1'               --주문 처리 여부
-);
-
-/*주문상세번호 시퀀스*/
-drop sequence order_detail_seq;
-create sequence order_detail_seq start with 1;
 
 /*Q&A 게시판 테이블*/
 alter table qna drop primary key cascade;
@@ -169,11 +173,10 @@ create sequence qna_seq start with 1;
 
 /*테스트용 쿼리*/
 insert into qna values(qna_seq.nextval, '테스트', '질문내용1', '답변내용', 'one', '2', sysdate);
-
-insert into qna (qseq, subject, content, id)
-values(qna_seq.nextval, '테스트2', '질문내용2', 'one');
+insert into qna (qseq, subject, content, id) values(qna_seq.nextval, '테스트2', '질문내용2', 'one');
 
 select * from qna;
+
 
 /*장바구니 뷰*/
 create or replace view cart_view
@@ -185,6 +188,7 @@ and result='1';
 
 select * from cart_view;
 
+
 /*주문목록 뷰*/
 create or replace view order_view
 as
@@ -194,7 +198,8 @@ where o.id = m.id and o.pseq = p.pseq
 and result='2';
 
 select * from order_view;
-           
+
+
 /*베스트상품 뷰*/
 create or replace view best_pro_view
 as
@@ -206,6 +211,7 @@ from(select rownum, pseq, name, price2, image, writer, publisher
 where rownum <=4;
 
 select * from best_pro_view;
+
 
 /*신상품 뷰*/
 create or replace view new_pro_view
