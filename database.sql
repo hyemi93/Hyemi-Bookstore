@@ -178,28 +178,6 @@ insert into qna (qseq, subject, content, id) values(qna_seq.nextval, '테스트2
 select * from qna;
 
 
-/*장바구니 뷰*/
-create or replace view cart_view
-as
-select o.cseq, o.id, o.pseq, m.name mname, p.name pname, o.quantity, o.indate, p.price2, o.result, p.image, p.writer, p.publisher
-from cart o, member m, product p 
-where o.id = m.id and o.pseq = p.pseq
-and result='1';
-
-select * from cart_view;
-
-
-/*주문목록 뷰*/
-create or replace view order_view
-as
-select o.cseq, o.oseq, o.id, o.pseq, m.name mname, p.name pname, o.quantity, o.indate, p.price2, o.result, p.image, p.writer, p.publisher
-from cart o, member m, product p 
-where o.id = m.id and o.pseq = p.pseq
-and result='2';
-
-select * from order_view;
-
-
 /*베스트상품 뷰*/
 create or replace view best_pro_view
 as
@@ -224,3 +202,25 @@ from(select rownum, pseq, name, price2, image, writer, publisher
 where rownum <=4;
 
 select * from new_pro_view;
+
+
+/*장바구니 뷰*/
+create or replace view cart_view
+as
+select o.cseq, o.id, o.pseq, m.name mname, p.name pname, o.quantity, o.indate, p.price2, o.result, p.image, p.writer, p.publisher
+from cart o, member m, product p 
+where o.id = m.id and o.pseq = p.pseq
+and result='1';
+
+select * from cart_view;
+
+
+/*주문목록 뷰*/
+create or replace view order_view
+as
+select o.cseq, o.oseq, o.id, o.pseq, m.name mname, p.name pname, o.quantity, o.indate, p.price2, o.result, p.image, p.writer, p.publisher
+from cart o, member m, product p 
+where o.id = m.id and o.pseq = p.pseq
+and result='2';
+
+select * from order_view;
