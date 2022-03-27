@@ -1,3 +1,4 @@
+/*관리자 테이블*/
 drop table worker;
 create table worker(          
     id          varchar2(20)  primary key,
@@ -6,6 +7,12 @@ create table worker(
     phone       varchar2(20)
 );
 
+/*테스트용 쿼리*/
+insert into worker values('admin', 'admin', '관리자', '010-777-7777');
+
+select * from worker;
+
+/*회원 테이블*/
 alter table member drop primary key cascade;
 drop table member;
 create table member(   
@@ -20,8 +27,15 @@ create table member(
     indate     date          default sysdate
 );
 
+/*테스트용 쿼리*/
+insert into member(id, pwd, name, zip_num, address, phone) values
+('one', '1111', '허혜미', '133-110', '서울시성동구성수동1가 1번지21호', '010-1234-5678');
+insert into member(id, pwd, name, zip_num, address, phone) values
+('two', '2222', '김혜미', '130-120', '서울시송파구잠실2동 리센츠 아파트 201동 505호', '010-1234-4567');
+
 select * from member;
 
+/*상품 테이블*/
 alter table product drop primary key cascade;
 drop table product;
 create table product(
@@ -38,78 +52,12 @@ create table product(
     bestyn     char(1)       default 'n',
     indate     date          default sysdate  
 );
+
+/*상품 번호 시퀀스*/
 drop sequence product_seq;
 create sequence product_seq start with 1;
 
-delete from product where pseq=7;
-
-alter table cart drop primary key cascade;
-drop table cart;
-create table cart (
-  cseq         number(10)    primary key,  -- 장바구니번호
-  oseq         number(10)    references orders(oseq),
-  id           varchar(16)   references member(id),  -- 주문자 아이디(FK :　member.id) 
-  pseq         number(5)     references product(pseq), -- 주문 상품번호(FK :product.pseq) 
-  quantity     number(5)     default 1,        -- 주문 수량
-  result       char(1)       default '1',      -- 1:미처리 2:처리
-  indate       date          default SYSDATE   -- 주문일
-);
-drop sequence cart_seq;
-create sequence cart_seq start with 1;
-
-alter table orders drop primary key cascade;
-drop table orders;
-create table orders(
-  oseq        number(10)    primary key,           -- 주문번호  
-  id          varchar(16)   references member(id), -- 주문자 아이디
-  name        varchar(50),
-  price       number,
-  count2	  number,
-  indate      date          default sysdate       -- 주문일
-);
-
-select * from orders;
-drop sequence orders_seq;
-create sequence orders_seq start with 1;
-
-alter table order_detail drop primary key cascade;
-drop table order_detail;
-create table order_detail(
-  odseq       number(10)   primary key,        -- 주문상세번호
-  oseq        number(10)   references orders(oseq),   -- 주문번호  
-  pseq        number(5)    references product(pseq),  -- 상품번호
-  quantity    number(5)    default 1,                 -- 주문수량
-  result      char(1)      default '1'                -- 1: 미처리 2: 처리     
-);
-drop sequence order_detail_seq;
-create sequence order_detail_seq start with 1;
-
---Q&A 게시판은 고객이 쇼핑몰에서 제품의 문의사항 또는 배송문의와 같은 제반적인 사항에 대해서 질문을 하고자 할 때 사용한다. 
-alter table qna drop primary key cascade;
-drop table qna;
-create table qna (
-  qseq        number(5)    primary key,  -- 글번호 
-  subject     varchar(300),            -- 제목
-  content     varchar(1000),          -- 문의내용
-  reply       varchar(1000),           -- 답변내용
-  id          varchar(20),                 -- 작성자(FK : member.id) 
-  rep         char(1)       default '1',        --1:답변 무  2:답변 유  
-  indate      date default  sysdate     -- 작성일
-); 
-drop sequence qna_seq;
-create sequence qna_seq start with 1;
-
-delete from qna where subject='테';
-
--- 샘플 데이터 입력
-insert into worker values('admin', 'admin', '홍관리', '010-777-7777');
-insert into worker values('pinksung', 'pinksung', '명강사', '010-999-9696');
-
-insert into member(id, pwd, name, zip_num, address, phone) values
-('one', '1111', '김나리', '133-110', '서울시성동구성수동1가 1번지21호', '017-777-7777');
-insert into member(id, pwd, name, zip_num, address, phone) values
-('two', '2222', '이백합', '130-120', '서울시송파구잠실2동 리센츠 아파트 201동 505호', '011-123-4567');
-
+/*테스트용 쿼리*/
 insert into product(pseq, name, kind, price1, price2, writer, publisher, content, image, bestyn) values(
 product_seq.nextval, '미드나잇 라이브러리', '1', '15800', '14200', '매트 헤이그', '인플루엔셜', '인생의 두 번째 기회에 대한 마법 같은 이야기', 'n1.jpg', 'y');
 insert into product(pseq, name, kind, price1, price2, writer, publisher, content, image, bestyn) values(
@@ -151,6 +99,68 @@ product_seq.nextval, '나만의 핸드메이드 천연비누', '5', '18000', '16
 insert into product(pseq, name, kind, price1, price2, writer, publisher, content, image, bestyn) values(
 product_seq.nextval, '코바늘로 뜨는 봄여름가을겨울', '5', '16000', '14400', '맨디 오설리번', '시그마북스', '좋아하는 색과 감각적인 디자인으로 사계절을 떠보자!', 'y3.jpg', 'n');
 
+/*장바구니 테이블*/
+alter table cart drop primary key cascade;
+drop table cart;
+create table cart (
+  cseq         number(10)    primary key,  -- 장바구니번호
+  oseq         number(10)    references orders(oseq),
+  id           varchar(16)   references member(id),  -- 주문자 아이디(FK :　member.id) 
+  pseq         number(5)     references product(pseq), -- 주문 상품번호(FK :product.pseq) 
+  quantity     number(5)     default 1,        -- 주문 수량
+  result       char(1)       default '1',      -- 1:미처리 2:처리
+  indate       date          default SYSDATE   -- 주문일
+);
+
+/*장바구니 번호 시퀀스*/
+drop sequence cart_seq;
+create sequence cart_seq start with 1;
+
+/*주문 테이블*/
+alter table orders drop primary key cascade;
+drop table orders;
+create table orders(
+  oseq        number(10)    primary key,           -- 주문번호  
+  id          varchar(16)   references member(id), -- 주문자 아이디
+  name        varchar(50),
+  price       number,
+  count2	  number,
+  indate      date          default sysdate       -- 주문일
+);
+
+select * from orders;
+drop sequence orders_seq;
+create sequence orders_seq start with 1;
+
+/*주문 상세 정보 테이블*/
+alter table order_detail drop primary key cascade;
+drop table order_detail;
+create table order_detail(
+  odseq       number(10)   primary key,        -- 주문상세번호
+  oseq        number(10)   references orders(oseq),   -- 주문번호  
+  pseq        number(5)    references product(pseq),  -- 상품번호
+  quantity    number(5)    default 1,                 -- 주문수량
+  result      char(1)      default '1'                -- 1: 미처리 2: 처리     
+);
+drop sequence order_detail_seq;
+create sequence order_detail_seq start with 1;
+
+/*Q&A 게시판 테이블*/
+alter table qna drop primary key cascade;
+drop table qna;
+create table qna (
+  qseq        number(5)    primary key,  -- 글번호 
+  subject     varchar(300),            -- 제목
+  content     varchar(1000),          -- 문의내용
+  reply       varchar(1000),           -- 답변내용
+  id          varchar(20),                 -- 작성자(FK : member.id) 
+  rep         char(1)       default '1',        --1:답변 무  2:답변 유  
+  indate      date default  sysdate     -- 작성일
+); 
+drop sequence qna_seq;
+create sequence qna_seq start with 1;
+
+/*테스트용 쿼리*/
 insert into qna (qseq, subject, content, id)
 values(qna_seq.nextval, '테스트', '질문내용1', 'one');
 update qna SET reply='답변내용', rep='2';
@@ -158,6 +168,16 @@ update qna SET reply='답변내용', rep='2';
 insert into qna (qseq, subject, content, id)
 values(qna_seq.nextval, '테스트2', '질문내용2', 'one');
 commit;
+
+
+-- 샘플 데이터 입력
+
+
+
+
+
+
+
 
 create or replace view cart_view
 as
