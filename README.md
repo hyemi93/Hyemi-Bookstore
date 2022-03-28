@@ -3,7 +3,7 @@
 
 **1. DB 설계**  
 <div align="center">
-<img src="https://user-images.githubusercontent.com/101648944/160269788-8cc92871-ae65-4dc4-a1e2-922e796f545e.PNG"/>
+<img src="https://user-images.githubusercontent.com/101648944/160410871-053dcacc-3b3f-407c-83a5-060ece5b7507.PNG"/>
 <img src="https://user-images.githubusercontent.com/101648944/160269787-b0e68f28-69f5-4097-9aeb-e6637ac4a69f.png"/>
 </div>  
 <Br><Br><Br>
